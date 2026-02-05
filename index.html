@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style> 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffe6e6;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Keeps the "No" button from causing scrollbars */
+        }
+        /* --- COLLAGE STYLING --- */
+        .collage-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Behind the container */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 10px;
+            opacity: 0.4; /* Makes images subtle so text is readable */
+            pointer-events: none; /* Prevents the collage from blocking button clicks */
+        }
+
+        .collage-bg img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+
+        h1 {
+            color: #ff4d4d;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            font-size: 1.2rem;
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #yesBtn {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #888;
+            color: white;
+            position: relative; /* JavaScript will change this to absolute */
+        }
+
+        .heart {
+            color: red;
+            font-size: 80px;
+            margin: 20px;
+            display: inline-block;
+            animation: beat 1s infinite;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* The fix for the hidden message */
+        .hidden {
+            display: none;
+        }
+
+        #response img {
+            max-width: 300px;
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="collage-bg">
+    <img src="rin1.jpg">
+    <img src="rin2.jpg">
+    <img src="rin3.jpg">
+    <img src="rin4.jpg">
+    <img src="rin1.jpg">
+    <img src="rin2.jpg">
+    <img src="rin3.jpg">
+    <img src="rin4.jpg">
+    <img src="rin1.jpg">
+    <img src="rin2.jpg">
+    <img src="rin3.jpg">
+    <img src="rin4.jpg">
+    <img src="rin1.jpg">
+    <img src="rin2.jpg">
+    <img src="rin3.jpg">
+    <img src="rin4.jpg">
+    <img src="rin1.jpg">
+    <img src="rin2.jpg">
+    <img src="rin3.jpg">
+    <img src="rin4.jpg">
+    <img src="rin1.jpg">
+    <img src="rin2.jpg">
+    <img src="rin3.jpg">
+    <img src="rin4.jpg">
+    </div>
+
+    <div class="container">
+        <div id="main-content">
+            <h1 id="question">Will you be my Valentine? 🌹</h1>
+            <div class="heart">❤️</div>
+            <div class="buttons">
+                <button id="yesBtn">Yes!</button>
+                <button id="noBtn">No</button>
+            </div>
+            <p id="extraText">PRETTY PLEASE!</p>
+        </div>
+
+        <div id="response" class="hidden">
+            <h1>YAY! I KNEW YOU'D SAY YES! 💖</h1>
+            <p>YOU TRIED TO CLICK THE NO BUTTON NOHHHH 🤨 ❤️</p>
+            <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3h4dWp1cTZlaWRyczJ4NDIwdWs3ZnFvbm12NHpvYm9tMngwbHZhMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MDJ9IbxxvDUQM/giphy.gif" alt="kissy cat">
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const mainContent = document.getElementById('main-content');
+        const response = document.getElementById('response');
+
+        // Make the "No" button dodge the mouse
+        noBtn.addEventListener('mouseover', () => {
+            // Get random coordinates
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            // Apply absolute positioning so it can move anywhere
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        });
+
+        // Handle the "Yes" click
+        yesBtn.addEventListener('click', () => {
+            mainContent.classList.add('hidden'); // Hide the question
+            response.classList.remove('hidden'); // Show the success message
+        });
+    </script>
+
+
+</body>
+
+</html>
