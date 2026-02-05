@@ -8,17 +8,14 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #ffe6e6;
-            color: #333;
-            text-align: center;
-            padding: 50px;
+            margin: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            margin: 0;
-            overflow: hidden; /* Keeps the "No" button from causing scrollbars */
+            overflow: hidden; 
         }
+
         /* --- COLLAGE STYLING --- */
         .collage-bg {
             position: fixed;
@@ -26,13 +23,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0; /* Behind the container */
+            z-index: 0;
             display: grid;
+            /* Adjusts to 2 columns on phones, more on desktop */
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 10px;
             padding: 10px;
-            opacity: 0.4; /* Makes images subtle so text is readable */
-            pointer-events: none; /* Prevents the collage from blocking button clicks */
+            opacity: 0.4; 
+            pointer-events: none; 
         }
 
         .collage-bg img {
@@ -43,20 +41,28 @@
         }
 
         .container {
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
             padding: 40px;
             border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            z-index: 1;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            z-index: 10;
+            text-align: center;
+            max-width: 400px;
+            width: 80%;
         }
 
         h1 {
             color: #ff4d4d;
             margin-bottom: 20px;
+            font-size: 1.8rem;
         }
 
         .buttons {
             margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         button {
@@ -66,7 +72,7 @@
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: 0.2s;
         }
 
         #yesBtn {
@@ -77,60 +83,65 @@
         #noBtn {
             background-color: #888;
             color: white;
-            position: relative; /* JavaScript will change this to absolute */
+            position: relative; /* JavaScript changes this to absolute on hover */
+            z-index: 11;
         }
 
         .heart {
             color: red;
-            font-size: 80px;
-            margin: 20px;
+            font-size: 70px;
+            margin: 15px;
             display: inline-block;
             animation: beat 1s infinite;
         }
 
         @keyframes beat {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            50% { transform: scale(1.15); }
         }
 
-        /* The fix for the hidden message */
         .hidden {
             display: none;
         }
 
         #response img {
-            max-width: 300px;
+            max-width: 100%;
             border-radius: 15px;
             margin-top: 15px;
+        }
+
+        #response p {
+            font-weight: bold;
+            color: #ff4d4d;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .collage-bg { grid-template-columns: repeat(2, 1fr); }
+            .container { padding: 25px; }
+            h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
+
+    <audio id="valentineMusic" loop>
+        <source src="wavetoearth.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="collage-bg">
-    <img src="rin1.jpg">
-    <img src="rin2.jpg">
-    <img src="rin3.jpg">
-    <img src="rin4.jpg">
-    <img src="rin1.jpg">
-    <img src="rin2.jpg">
-    <img src="rin3.jpg">
-    <img src="rin4.jpg">
-    <img src="rin1.jpg">
-    <img src="rin2.jpg">
-    <img src="rin3.jpg">
-    <img src="rin4.jpg">
-    <img src="rin1.jpg">
-    <img src="rin2.jpg">
-    <img src="rin3.jpg">
-    <img src="rin4.jpg">
-    <img src="rin1.jpg">
-    <img src="rin2.jpg">
-    <img src="rin3.jpg">
-    <img src="rin4.jpg">
-    <img src="rin1.jpg">
-    <img src="rin2.jpg">
-    <img src="rin3.jpg">
-    <img src="rin4.jpg">
+        <img src="rin1.jpg">
+        <img src="rin2.jpg">
+        <img src="rin3.jpg">
+        <img src="rin4.jpg">
+        <img src="rin1.jpg">
+        <img src="rin2.jpg">
+        <img src="rin3.jpg">
+        <img src="rin4.jpg">
+        <img src="rin1.jpg">
+        <img src="rin2.jpg">
+        <img src="rin3.jpg">
+        <img src="rin4.jpg">
     </div>
 
     <div class="container">
@@ -147,6 +158,7 @@
         <div id="response" class="hidden">
             <h1>YAY! I KNEW YOU'D SAY YES! 💖</h1>
             <p>YOU TRIED TO CLICK THE NO BUTTON NOHHHH 🤨 ❤️</p>
+            <p>look at me bebi</p>
             <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3h4dWp1cTZlaWRyczJ4NDIwdWs3ZnFvbm12NHpvYm9tMngwbHZhMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MDJ9IbxxvDUQM/giphy.gif" alt="kissy cat">
         </div>
     </div>
@@ -156,27 +168,30 @@
         const yesBtn = document.getElementById('yesBtn');
         const mainContent = document.getElementById('main-content');
         const response = document.getElementById('response');
+        const music = document.getElementById('valentineMusic');
 
-        // Make the "No" button dodge the mouse
-        noBtn.addEventListener('mouseover', () => {
-            // Get random coordinates
+        // Logic to make the "No" button move
+        const moveButton = () => {
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
             
-            // Apply absolute positioning so it can move anywhere
             noBtn.style.position = 'absolute';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
-        });
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        };
 
-        // Handle the "Yes" click
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', moveButton); // For mobile taps
+
+        // Logic for clicking "Yes"
         yesBtn.addEventListener('click', () => {
-            mainContent.classList.add('hidden'); // Hide the question
-            response.classList.remove('hidden'); // Show the success message
+            mainContent.classList.add('hidden');
+            response.classList.remove('hidden');
+            
+            // Start the music!
+            music.play().catch(e => console.log("Playback failed:", e));
         });
     </script>
 
-
 </body>
-
 </html>
